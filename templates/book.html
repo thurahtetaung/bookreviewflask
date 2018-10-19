@@ -1,0 +1,107 @@
+{% extends "layout.html" %}
+
+{% block title %}
+<title> {{ book_details[1][1] }} </title>
+{% endblock %}
+
+{% block navbar %}
+<li><a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+{% endblock %}
+
+{% block body %}
+<div class = "container">
+<h1> {{ book_details[1][1] }} </h1>
+
+<div class="container">
+	<div class="row">
+	<table class="table table-hover">
+    	<thead>
+      	<tr>
+        	<th><h4><p style="padding: 20px; text-decoration:underline;">Book Details</p></h4></th>
+      	</tr>
+    	</thead>
+    	<tbody>
+      	<tr>
+        	<td><strong><p style="padding: 20px"> Title </p></strong></td>
+        	<td><p style="padding: 20px"> {{ book_details[1][1] }} </p></td>
+      	</tr>
+     	<tr>
+       		<td><strong><p style="padding: 20px"> Author </p></strong></td>
+      	 	<td><p style="padding: 20px"> {{ book_details[2][1] }} </p></td>
+     	</tr>
+     	<tr>
+       		<td><strong><p style="padding: 20px"> ISBN </p></strong></td>
+      	 	<td><p style="padding: 20px"> {{ book_details[0][1] }} </p></td>
+     	</tr>
+     	<tr>
+     		<td><strong> <p style="padding: 20px"> Publication Date </p> </strong></td>
+      		<td><p style="padding: 20px"> {{ book_details[3][1] }} </p></td>
+    	</tr>
+    	<tr>
+     		<td><strong> <p style="padding: 20px"> Goodreads Review Count </p> </strong></td>
+      		<td><p style="padding: 20px"> {{ book_details[4][1] }} </p></td>
+    	</tr>
+    	<tr>
+     		<td><strong> <p style="padding: 20px"> Average Rating </p> </strong></td>
+      		<td><p style="padding: 20px"> {{ book_details[5][1] }} </p></td>
+    	</tr>
+    	</tbody>
+  	</table>
+  	</div>
+  	<div class="row">
+  	
+  	
+    	
+      	
+    <h4><p style="padding-left: 20px; padding-bottom: 5px; text-decoration:underline;">Reviews</p></h4>
+    {% if already_reviewed == False %}
+    <form method="POST"> 	
+    	
+    	
+      
+        	<strong style="padding-left: 20px; padding-bottom: 10px; ">Rating:<br></strong>
+        	<p style="padding-left: 20px; padding-bottom: 5px ;"><input type="number" name="star" id="some_id" class="rating" /></p>
+       		<div class="form-group">
+  			<p style="padding-left: 20px; padding-bottom: 5px ;">	<label for="comment"><strong>Review:</strong></label></p>
+  			<p style="padding-left: 20px; padding-bottom: 5px ;">
+  			<textarea class="form-control" rows="5" id="comment" placeholder="Write a review for the book." name="review"></textarea></p>
+			<p style="padding-left: 20px ;padding-bottom: 5px;"> <button class="btn btn-primary">Submit</button> </p>
+ 
+  	</form>
+  	{% else %}
+  	<form method="POST"> 	
+    	
+    	
+      
+        	<strong style="padding-left: 20px; padding-bottom: 10px; ">Rating:<br></strong>
+        	<p style="padding-left: 20px; padding-bottom: 5px ;"><input type="number" name="star" id="some_id" class="rating" disabled /></p>
+       		<div class="form-group">
+  			<p style="padding-left: 20px; padding-bottom: 5px ;">	<label for="comment"><strong>Review:</strong></label></p>
+  			<p style="padding-left: 20px; padding-bottom: 5px ;">
+  			<textarea class="form-control" rows="5" id="comment" placeholder="Write a review for the book." name="review" disabled data-toggle="tooltip" data-placement="top" title="You've already reviewed this book."></textarea></p>
+			<p style="padding-left: 20px; padding-bottom: 5px;"> <button class="btn btn-primary disabled" disabled data-toggle="tooltip" data-placement="top" title="You've already reviewed this book.">Submit</button> </p>
+ 
+  	</form>
+  	{% endif %}
+  </div>
+  <hr>
+  <div class="row">
+  	{% if dbreview != [] %}
+  	{% for db in dbreview %}
+
+  	<p style="color: grey; text-align: right;">
+  	<label for="star_reader"><em>{{ db.username }}</em></label> <input type="number" name="read_star" id="star_reader" class="rating" value="{{ db.star }}" data-readonly />
+
+  	</p><br>
+  	<p style="text-align: right;"> {{ db.review }}</p><hr>
+
+  	{% endfor %}
+  	{% endif %}
+
+
+  </div>
+  	
+  
+</div>
+
+{% endblock %}

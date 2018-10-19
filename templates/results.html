@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+
+{% block title %}
+<title>Search Results</title>
+{% endblock %}
+
+{% block td %}
+
+<script type="text/javascript">
+$(document).ready(function($) {
+    $(".table-row").click(function() {
+        window.document.location = $(this).data("href");
+    });
+});
+</script>
+
+{% endblock %}
+
+{% block navbar %}
+<li><a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+	
+
+{% if dbresult == [] %}
+	<h1> The search does not yield any result.</h1>
+{% else %}
+	<h1> Results for "{{ search }}" </h1>
+	
+
+	<table class="table table-hover">
+		<thead>
+      		<tr>
+        		<th>ISBN</th>
+        		<th>Title</th>
+        		<th>Author</th>
+        		<th>Publication Year</th>
+      		</tr>
+    	</thead>
+    	<tbody>
+        {% for book in dbresult %}
+            
+    		<tr class = "table-row" data-href="{{ url_for('book', book_isbn=book.isbn) }}">
+        		<td> <p style="cursor: pointer; text-decoration: underline;"> {{ book.isbn }} </p> </td>
+        		<td> <p style="cursor: pointer; text-decoration: underline;"> {{ book.title }} </p> </td>
+        		<td> <p style="cursor: pointer; text-decoration: underline;"> {{ book.author }} </p> </td>
+        		<td> <p style="cursor: pointer; text-decoration: underline;"> {{ book.year }} </p> </td>
+      		</tr>
+     
+        {% endfor %}
+    	</tbody>
+  	</table>
+{% endif %}
+</div>
+
+
+{% endblock %}

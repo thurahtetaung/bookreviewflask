@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block title %}
+<title>Home</title>
+{% endblock %}
+
+{% block navbar %}
+    <li><a href="{{ url_for('register') }}"><span class="glyphicon glyphicon-user"></span> Register</a></li>
+    <li><a href="{{ url_for('login') }}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+{% endblock %}
+
+
+{% block body %}  
+<div class="container">
+  <h3>A Book Review Site</h3>
+  <p>The site for your favourite book reviews</p>
+</div>
+{% endblock %}
