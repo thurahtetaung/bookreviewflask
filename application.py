@@ -62,12 +62,14 @@ def login():
 			return render_template("login.html", error = "The credentials do not match!")
 	return render_template("login.html")
 
-@app.route("/userpage/<user>", methods = ["GET", "POST"])
-def userpage(user):
+def check_login():
 	if 'username' not in session:
 		flash('Please Login to continue your operation.')
 		return redirect(url_for('login'))
 
+@app.route("/userpage/<user>", methods = ["GET", "POST"])
+def userpage(user):
+	check_login()
 	query = request.form.get('search_text')
 	if query:
 		return redirect(url_for('results', search = query))
@@ -80,18 +82,14 @@ def logout():
 	
 @app.route("/results/<search>", methods = ["GET"])
 def results(search):
-	if 'username' not in session:
-		flash('Please Login to continue you operation.')
-		return redirect(url_for('login'))
+	check_login()
 	dbresult = db.execute("SELECT * FROM books WHERE (isbn LIKE :dbq) OR (UPPER(title) LIKE UPPER(:dbq)) OR (UPPER(author) LIKE UPPER(:dbq)) LIMIT 30", {"dbq": '%' + search + '%'}).fetchall()
 	db.commit()
 	return render_template("results.html", dbresult = dbresult, search = search)
 
 @app.route("/book/<book_isbn>", methods = ["GET", "POST"])
 def book(book_isbn):
-	if 'username' not in session:
-		flash('Please Login to continue you operation.')
-		return redirect(url_for('login'))
+	check_login()
 	db_details = db.execute("SELECT * FROM books WHERE (isbn = :book_isbn)", {"book_isbn": book_isbn}).fetchone()
 	db.commit()
 	if db_details is None:
